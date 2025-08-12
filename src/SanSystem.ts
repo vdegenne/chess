@@ -101,4 +101,21 @@ export class SanSystem {
 
 		return chess.fen()
 	}
+
+	/**
+	 * Fen iterator, e.g.
+	 * ```js
+	 *   for (const fen of this.#sanSystem.fenTravel()) {
+	 *     this.board.setPosition(fen);
+	 *     await sleep(400);
+	 *   }
+	 * ```
+	 */
+	*fenTravel(end?: number) {
+		const length = this.history().length
+		const max = Math.min(end ?? length, length)
+		for (let i = 0; i <= max; ++i) {
+			yield this.fen(i)
+		}
+	}
 }
