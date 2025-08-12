@@ -90,7 +90,7 @@ export class SanSystem {
 		}
 
 		const moves = this.history()
-		if (moveIndex < 0 || moveIndex > moves.length) {
+		if (moveIndex < 1 || moveIndex > moves.length) {
 			throw new Error('moveIndex out of range')
 		}
 
@@ -114,7 +114,7 @@ export class SanSystem {
 	*fenTravel(end?: number) {
 		const length = this.history().length
 		const max = Math.min(end ?? length, length)
-		for (let i = 0; i <= max; ++i) {
+		for (let i = 1; i <= max; i++) {
 			yield this.fen(i)
 		}
 	}

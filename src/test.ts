@@ -23,3 +23,8 @@ console.log(sans.fen(2)) // Fen at move #2
 
 // Tough not recommended, the _chess internal object is public
 console.log(sans._chess.pgn()) // Prints pgn with headers
+
+// Travel the fen
+for (const fen of sans.fenTravel()) {
+	console.log(fen)
+}
