@@ -1,0 +1,83 @@
+import {Chess} from 'chess.js'
+
+interface ToStringOptions {
+	clean: boolean
+	unicode: boolean
+}
+
+const UNICODE_MAP: {[key: string]: string} = {
+	K: '♔',
+	Q: '♕',
+	R: '♖',
+	B: '♗',
+	N: '♘',
+}
+
+export class SanSystem {
+	_chess: Chess
+
+	constructor(line = '') {
+		this._chess = new Chess()
+		if (line) {
+			const cleanLine = SanSystem.#cleanLine(line)
+			this.addMoves(cleanLine)
+			// this._chess.loadPgn(line)
+		}
+	}
+
+	static #cleanLine(value: string): string {
+		return SanSystem.#fromUnicode(
+			value.replace(/\d+\./g, '').trim().replace(/\s+/g, ' '),
+		)
+	}
+	static #toUnicode(line: string): string {
+		return line.replace(/[KQRBN]/g, (m) => UNICODE_MAP[m])
+	}
+	static #fromUnicode(line: string): string {
+		let result = line
+		for (const [key, unicodeChar] of Object.entries(UNICODE_MAP)) {
+			result = result.replaceAll(unicodeChar, key)
+		}
+		return result
+	}
+
+	/**
+	 * You can pass moves like
+	 * "e4" or "e4 e5 Nf6"
+	 */
+	addMoves(moves: string): void {
+		const sanMoves = moves.trim().split(/\s+/)
+		for (const san of sanMoves) {
+			this._chess.move(san)
+		}
+	}
+
+	toString(options?: Partial<ToStringOptions>) {
+		const _options: ToStringOptions = {
+			clean: false,
+			unicode: false,
+			...(options ?? {}),
+		}
+		let line: string
+		if (_options.clean) {
+			line = this._chess.history().join(' ')
+		} else {
+			line = this._chess.pgn().split('\n\n')[1].replace(/\*/g, '')
+		}
+		if (_options.unicode) {
+			line = SanSystem.#toUnicode(line)
+		}
+		return line
+	}
+
+	pgn(unicode = false) {
+		return this.toString({unicode})
+	}
+	cleanPgn(unicode = false) {
+		return this.toString({clean: true, unicode})
+	}
+
+	toFen() {
+		return this._chess.fen()
+	}
+}

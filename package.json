@@ -1,0 +1,44 @@
+{
+	"name": "@vdegenne/chess",
+	"version": "0.1.1",
+	"description": "",
+	"type": "module",
+	"exports": {
+		".": {},
+		"./SanSystem.js": {
+			"import": "./lib/SanSystem.js",
+			"types": "./lib/SanSystem.d.ts"
+		}
+	},
+	"scripts": {
+		"build": "wireit",
+		"test": "wireit"
+	},
+	"files": [],
+	"devDependencies": {
+		"typescript": "^5.9.2",
+		"wireit": "^0.14.12"
+	},
+	"wireit": {
+		"build": {
+			"command": "tsc --pretty",
+			"clean": "if-file-deleted",
+			"files": [
+				"./tsconfig.json",
+				"./src"
+			],
+			"output": [
+				"./lib"
+			]
+		},
+		"test": {
+			"command": "node ./lib/test.js",
+			"dependencies": [
+				"build"
+			]
+		}
+	},
+	"dependencies": {
+		"chess.js": "^1.4.0"
+	}
+}
