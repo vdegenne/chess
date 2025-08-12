@@ -29,8 +29,9 @@ console.log(sans.pgn(true)) // 1. e4 e5 2. ♘f3 ♘c6 3. ♗c4 ♗e7
 // or
 console.log(sans.toString({unicode: true})) // "e4 e5 ♘f3 ♘c6 ♗c4 ♗e7"
 
+// Fen at move #
+console.log(sans.fen(2)) // Fen at move #2
+
 // Tough not recommended, the _chess internal object is public
 console.log(sans._chess.pgn()) // Prints pgn with headers
-console.log(sans._chess.history()) // Access history of moves
-console.log(sans._chess.turn()) // "w" (white to play)
 ```

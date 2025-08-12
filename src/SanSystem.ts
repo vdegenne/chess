@@ -77,7 +77,28 @@ export class SanSystem {
 		return this.toString({clean: true, unicode})
 	}
 
-	toFen() {
-		return this._chess.fen()
+	history() {
+		return this._chess.history()
+	}
+	turn() {
+		return this._chess.turn()
+	}
+
+	fen(moveIndex?: number) {
+		if (moveIndex === undefined) {
+			return this._chess.fen()
+		}
+
+		const moves = this.history()
+		if (moveIndex < 0 || moveIndex > moves.length) {
+			throw new Error('moveIndex out of range')
+		}
+
+		const chess = new Chess()
+		for (let i = 0; i < moveIndex; i++) {
+			chess.move(moves[i])
+		}
+
+		return chess.fen()
 	}
 }
