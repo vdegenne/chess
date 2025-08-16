@@ -64,6 +64,6 @@ import {Chess} from '@vdegenne/chess' // or 'chess.js'
 const chess = new Chess()
 chess.loadPgn('e4 e5 Nf3')
 
-commentary.speak(chess.history({verbose: true})[3]) // "Knight f3"
+commentary.speak(chess.history({verbose: true})[2]) // "Knight f3"
 // verbose: true IS IMPORTANT HERE
 ```
