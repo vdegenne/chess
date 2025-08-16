@@ -1,6 +1,6 @@
 {
 	"name": "@vdegenne/chess",
-	"version": "0.1.8",
+	"version": "0.1.9",
 	"description": "",
 	"type": "module",
 	"exports": {
@@ -11,6 +11,10 @@
 		"./SanSystem.js": {
 			"import": "./lib/SanSystem.js",
 			"types": "./lib/SanSystem.d.ts"
+		},
+		"./utils.js": {
+			"import": "./lib/utils.js",
+			"types": "./lib/utils.d.ts"
 		}
 	},
 	"scripts": {
