@@ -15,6 +15,10 @@
 		"./utils.js": {
 			"import": "./lib/utils.js",
 			"types": "./lib/utils.d.ts"
+		},
+		"./commentary.js": {
+			"import": "./lib/commentary/index.js",
+			"types": "./lib/commentary/index.d.ts"
 		}
 	},
 	"scripts": {
