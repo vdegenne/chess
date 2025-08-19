@@ -30,7 +30,6 @@ export function toUnicodeChess(sanLine: string, options?: Partial<Options>) {
 				i % 2 === 0 ? _options.color : _options.color === 'w' ? 'b' : 'w'
 			return move.replace(/[KQRBNP]/g, (match) => {
 				const unicode = color === 'w' ? pieces[match][0] : pieces[match][1]
-				console.log(unicode)
 				return _options.spanUnicode
 					? `<span class="unicode">${unicode}</span>`
 					: unicode
