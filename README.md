@@ -46,14 +46,14 @@ for (const fen of sans.fenTravel()) {
 First you need to move the audio files to your local project, e.g.
 
 ```bash
-cp -r ../node_modules/@vdegenne/chess/sounds/default/ ./public/.
+mkdir -p ./public/commentary && cp -r ./node_modules/@vdegenne/chess/sounds/default/ ./public/commentary/.
 ```
 
 Then in your code
 
 ```ts
 import {Commentary} from '@vdegenne/chess/commentary.js'
-const commentary = new Commentary('/sounds/default/', {volume: 0.5}) // vite public path.
+const commentary = new Commentary('/commentary/default', {volume: 0.5}) // vite public path.
 ```
 
 commentary works by feeding the speak method a chess.js Move object, e.g.
