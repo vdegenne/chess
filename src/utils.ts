@@ -21,19 +21,21 @@ const pieces: Record<string, string[]> = {
 	P: ['♙', '♟'], // optional, usually pawns are not written in SAN
 }
 
-export function toUnicodeChess(
-	san: string,
-	options?: Partial<Options>,
-): string {
+export function toUnicodeChess(sanLine: string, options?: Partial<Options>) {
 	const _options: Options = {color: 'w', spanUnicode: false, ...(options ?? {})}
-
-	// Replace piece letters with unicode symbols
-	return san.replace(/[KQRBNP]/g, (match) => {
-		const unicode = _options.color === 'w' ? pieces[match][0] : pieces[match][1]
-		return _options.spanUnicode
-			? `<span class="unicode">${unicode}</span>`
-			: unicode
-	})
+	const moves = sanLine.split(' ')
+	return moves
+		.map((move, i) => {
+			const color =
+				i % 2 === 0 ? _options.color : _options.color === 'w' ? 'b' : 'w'
+			return move.replace(/[KQRBNP]/g, (match) => {
+				const unicode = color === 'w' ? pieces[match][0] : pieces[match][1]
+				return _options.spanUnicode
+					? `<span class="unicode">${unicode}</span>`
+					: unicode
+			})
+		})
+		.join(' ')
 }
 
 export function sanToPhrase(san: string): string {

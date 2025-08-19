@@ -56,7 +56,7 @@ export class Commentary {
 
 	async speak(move: Move, volume = this.#options.volume) {
 		const mapArray = this.#sanToMapArray(move)
-		console.log(mapArray)
+		// console.log(mapArray)
 		const fullPaths = this.#mapArrayToFullPaths(mapArray)
 		await speaker.speakFiles(fullPaths, volume)
 	}

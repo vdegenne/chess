@@ -1,4 +1,5 @@
 import {Chess} from 'chess.js'
+import {toUnicodeChess} from './utils.js'
 
 interface ToStringOptions {
 	clean: boolean
@@ -29,9 +30,6 @@ export class SanSystem {
 		return SanSystem.#fromUnicode(
 			value.replace(/\d+\./g, '').trim().replace(/\s+/g, ' '),
 		)
-	}
-	static #toUnicode(line: string): string {
-		return line.replace(/[KQRBN]/g, (m) => UNICODE_MAP[m])
 	}
 	static #fromUnicode(line: string): string {
 		let result = line
@@ -65,7 +63,7 @@ export class SanSystem {
 			line = this._chess.pgn().split('\n\n')[1].replace(/\*/g, '')
 		}
 		if (_options.unicode) {
-			line = SanSystem.#toUnicode(line)
+			line = toUnicodeChess(line)
 		}
 		return line
 	}
