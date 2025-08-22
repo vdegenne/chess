@@ -1,16 +1,12 @@
 {
 	"name": "@vdegenne/chess",
-	"version": "0.1.14",
+	"version": "0.1.15",
 	"description": "",
 	"type": "module",
 	"exports": {
 		".": {
-			"import": "./lib/index.js",
-			"types": "./lib/index.d.ts"
-		},
-		"./SanSystem.js": {
-			"import": "./lib/SanSystem.js",
-			"types": "./lib/SanSystem.d.ts"
+			"import": "./lib/Chess.js",
+			"types": "./types.d.ts"
 		},
 		"./utils.js": {
 			"import": "./lib/utils.js",
@@ -19,6 +15,9 @@
 		"./commentary.js": {
 			"import": "./lib/commentary/index.js",
 			"types": "./lib/commentary/index.d.ts"
+		},
+		"./openings/": {
+			"import": "./lib/openings/"
 		}
 	},
 	"scripts": {
@@ -27,11 +26,21 @@
 	},
 	"files": [
 		"./lib/",
-		"./sounds/"
+		"./sounds/",
+		"./types.d.ts"
 	],
 	"devDependencies": {
+		"chessboard-element": "^1.2.0",
+		"lit": "^3.3.1",
 		"typescript": "^5.9.2",
 		"wireit": "^0.14.12"
+	},
+	"peerDependencies": {
+		"chessboard-element": "^1.2.0",
+		"lit": "^3.0.0"
+	},
+	"dependencies": {
+		"chess.js": "^1.4.0"
 	},
 	"wireit": {
 		"build": {
@@ -51,8 +60,5 @@
 				"build"
 			]
 		}
-	},
-	"dependencies": {
-		"chess.js": "^1.4.0"
 	}
 }

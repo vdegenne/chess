@@ -1,4 +1,4 @@
-type Options = {
+export type ToUnicodeOptions = {
 	/**
 	 * @default 'w'
 	 */
@@ -11,6 +11,10 @@ type Options = {
 	 */
 	spanUnicode: boolean
 }
+export const TO_UNICODE_DEFAULT_OPTIONS: ToUnicodeOptions = {
+	color: 'w',
+	spanUnicode: false,
+}
 
 const pieces: Record<string, string[]> = {
 	K: ['♔', '♚'],
@@ -21,14 +25,24 @@ const pieces: Record<string, string[]> = {
 	P: ['♙', '♟'], // optional, usually pawns are not written in SAN
 }
 
-export function toUnicodeChess(sanLine: string, options?: Partial<Options>) {
-	const _options: Options = {color: 'w', spanUnicode: false, ...(options ?? {})}
-	const moves = sanLine.split(' ')
-	return moves
-		.map((move, i) => {
+export function toUnicode(pgn: string, options?: Partial<ToUnicodeOptions>) {
+	const _options: ToUnicodeOptions = {
+		...TO_UNICODE_DEFAULT_OPTIONS,
+		...(options ?? {}),
+	}
+
+	// split PGN into tokens (moves or numbers)
+	const tokens = pgn.trim().split(/\s+/)
+
+	return tokens
+		.map((token, i) => {
+			// if this token is a move number like "1.", "2.", just return it as-is
+			if (/^\d+\.$/.test(token)) return token
+
+			// otherwise it's a move
 			const color =
 				i % 2 === 0 ? _options.color : _options.color === 'w' ? 'b' : 'w'
-			return move.replace(/[KQRBNP]/g, (match) => {
+			return token.replace(/[KQRBNP]/g, (match) => {
 				const unicode = color === 'w' ? pieces[match][0] : pieces[match][1]
 				return _options.spanUnicode
 					? `<span class="unicode">${unicode}</span>`
@@ -89,4 +103,8 @@ export function sanToPhrase(san: string): string {
 	if (check === '#') phrase += ' (checkmate)'
 
 	return phrase
+}
+
+export function removeMoveNumbers(pgn: string) {
+	return pgn.replace(/\d+\.\s*/g, '')
 }
