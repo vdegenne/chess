@@ -5,15 +5,15 @@ export type ToUnicodeOptions = {
 	color: 'w' | 'b'
 
 	/**
-	 * If true, will add <span class="unicode"> around unicode
+	 * If true, will return pgn in HTML format
 	 *
 	 * @default false
 	 */
-	spanUnicode: boolean
+	html: boolean
 }
 export const TO_UNICODE_DEFAULT_OPTIONS: ToUnicodeOptions = {
 	color: 'w',
-	spanUnicode: false,
+	html: false,
 }
 
 const pieces: Record<string, string[]> = {
@@ -37,17 +37,28 @@ export function toUnicode(pgn: string, options?: Partial<ToUnicodeOptions>) {
 	return tokens
 		.map((token, i) => {
 			// if this token is a move number like "1.", "2.", just return it as-is
-			if (/^\d+\.$/.test(token)) return token
+			if (/^\d+\.$/.test(token)) {
+				if (_options.html) {
+					return `<span class="move-number">${token}</span>`
+				} else {
+					return token
+				}
+			}
 
 			// otherwise it's a move
 			const color =
 				i % 2 === 0 ? _options.color : _options.color === 'w' ? 'b' : 'w'
-			return token.replace(/[KQRBNP]/g, (match) => {
+			const move = token.replace(/[KQRBNP]/g, (match) => {
 				const unicode = color === 'w' ? pieces[match][0] : pieces[match][1]
-				return _options.spanUnicode
+				return _options.html
 					? `<span class="unicode">${unicode}</span>`
 					: unicode
 			})
+			if (_options.html) {
+				return `<span class="move">${move}</span>`
+			} else {
+				return move
+			}
 		})
 		.join(' ')
 }

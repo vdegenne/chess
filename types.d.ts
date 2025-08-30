@@ -16,22 +16,28 @@ declare global {
 		interface OpeningInterface {
 			id: number
 			name: string
+			pov: 'w' | 'b'
+			description?: string | undefined
 			altNames?: string[] | undefined
 			line: string
+			youtubes?: string[] | undefined
+			altLines?: string[] | undefined
 			trick?: boolean
 			tierLists: {
 				HLTierListBeginner: HikaruLevyTierListValue | undefined
-				HLTierListUrl: string | undefined
+				HLTierListBeginnerUrl: string | undefined
 			}
+			tags?: string[] | undefined
 		}
 
 		interface RuntimeOpening extends OpeningInterface {
 			chess: Chess
-			fen: () => string
-			getLine: () => string | TemplateResult
+			// fen: () => string
+			// getLine: () => string | TemplateResult
 		}
 
 		type OpeningsSortMethod = 'Moves count' | 'Alphabet'
+		type OpeningsFromPerspectiveFilter = 'White' | 'Black' | 'Both'
 	}
 }
 

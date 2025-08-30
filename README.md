@@ -52,3 +52,11 @@ chess.loadPgn('e4 e5 Nf3')
 commentary.speak(chess.history({verbose: true})[2]) // "Knight f3"
 // verbose: true IS IMPORTANT HERE
 ```
+
+## Openings
+
+### Images
+
+```bash
+mkdir -p ./public/img && cp -r ../node_modules/@vdegenne/chess/img/openings ./public/img/.
+```

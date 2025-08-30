@@ -87,10 +87,13 @@ export class Chess extends _Chess {
 		}
 
 		const moves = this.history({verbose: true})
-		if (_options.moveIndex < 1 || _options.moveIndex > moves.length) {
+		if (_options.moveIndex < 0 || _options.moveIndex > moves.length) {
 			throw new Error('moveIndex out of range')
 		}
 
+		if (_options.moveIndex === 0) {
+			return moves[0].before
+		}
 		return moves[_options.moveIndex - 1].after
 	}
 
@@ -103,10 +106,10 @@ export class Chess extends _Chess {
 	 *   }
 	 * ```
 	 */
-	*fenTravel(end?: number) {
+	*fenTravel(start = 1, end?: number) {
 		const length = this.history().length
 		const max = Math.min(end ?? length, length)
-		for (let i = 1; i <= max; i++) {
+		for (let i = start; i <= max; i++) {
 			yield this.fen({moveIndex: i})
 		}
 	}

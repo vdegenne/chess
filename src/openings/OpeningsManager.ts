@@ -54,13 +54,29 @@ if (duplicates.line.length > 0 || duplicates.id.length > 0) {
 	throw new Error(messages.join(' | '))
 }
 
+type GetOpeningsOptions = {
+	/**
+	 * @default 'Moves count'
+	 */
+	sort: Chess.OpeningsSortMethod
+	/**
+	 * @default 'Both'
+	 */
+	fromPerspective: Chess.OpeningsFromPerspectiveFilter
+}
+
 export class OpeningsManager {
 	#openings: Chess.RuntimeOpening[] = _openings.map((o) => new Opening(o))
 
-	getOpenings(options: {sort?: Chess.OpeningsSortMethod | undefined} = {}) {
+	getOpenings(options?: Partial<GetOpeningsOptions>) {
+		const _options: GetOpeningsOptions = {
+			sort: 'Moves count',
+			fromPerspective: 'Both',
+			...(options ?? {}),
+		}
 		const openings = [...this.#openings]
-		if (options.sort) {
-			switch (options.sort) {
+		if (_options.sort) {
+			switch (_options.sort) {
 				case 'Alphabet':
 					openings.sort((o1, o2) => o1.name.localeCompare(o2.name))
 					break
@@ -75,7 +91,14 @@ export class OpeningsManager {
 					break
 			}
 		}
-		return openings
+		switch (_options.fromPerspective) {
+			case 'White':
+				return openings.filter((o) => o.pov === 'w')
+			case 'Black':
+				return openings.filter((o) => o.pov === 'b')
+			case 'Both':
+				return openings
+		}
 	}
 
 	getOpeningFromName(name: string) {
@@ -83,6 +106,25 @@ export class OpeningsManager {
 	}
 	getOpeningFromId(id: number) {
 		return this.#openings.find((o) => o.id === id)
+	}
+
+	getStats() {
+		const lengths = this.getOpenings().map((o) => o.chess.history().length)
+
+		// Count occurrences
+		const movesCountsMap = lengths.reduce(
+			(acc, len) => {
+				acc[len] = (acc[len] || 0) + 1
+				return acc
+			},
+			{} as {[movesCount: number]: number},
+		)
+
+		return {
+			movesCountsMap,
+			minMoves: Math.min(...Object.keys(movesCountsMap).map((k) => Number(k))),
+			maxMoves: Math.max(...Object.keys(movesCountsMap).map((k) => Number(k))),
+		}
 	}
 }
 
