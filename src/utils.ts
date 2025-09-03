@@ -26,6 +26,10 @@ const pieces: Record<string, string[]> = {
 }
 
 export function toUnicode(pgn: string, options?: Partial<ToUnicodeOptions>) {
+	if (!pgn) {
+		return ''
+	}
+
 	function getColor(moveIndex: number, baseColor: 'w' | 'b') {
 		return moveIndex % 2 === 0 ? baseColor : baseColor === 'w' ? 'b' : 'w'
 	}
