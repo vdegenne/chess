@@ -1,6 +1,6 @@
 {
 	"name": "@vdegenne/chess",
-	"version": "0.1.16",
+	"version": "0.1.17",
 	"description": "",
 	"type": "module",
 	"exports": {
@@ -27,7 +27,8 @@
 	"files": [
 		"./lib/",
 		"./sounds/",
-		"./types.d.ts"
+		"./types.d.ts",
+		"./src/Chess.ts"
 	],
 	"devDependencies": {
 		"chessboard-element": "^1.2.0",

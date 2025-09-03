@@ -26,39 +26,39 @@ const pieces: Record<string, string[]> = {
 }
 
 export function toUnicode(pgn: string, options?: Partial<ToUnicodeOptions>) {
+	function getColor(moveIndex: number, baseColor: 'w' | 'b') {
+		return moveIndex % 2 === 0 ? baseColor : baseColor === 'w' ? 'b' : 'w'
+	}
+
 	const _options: ToUnicodeOptions = {
 		...TO_UNICODE_DEFAULT_OPTIONS,
 		...(options ?? {}),
 	}
 
-	// split PGN into tokens (moves or numbers)
 	const tokens = pgn.trim().split(/\s+/)
+	let moveIndex = 0
 
 	return tokens
-		.map((token, i) => {
-			// if this token is a move number like "1.", "2.", just return it as-is
+		.map((token) => {
+			// move number like "1."
 			if (/^\d+\.$/.test(token)) {
-				if (_options.html) {
-					return `<span class="move-number">${token}</span>`
-				} else {
-					return token
-				}
+				return _options.html
+					? `<span class="move-number">${token}</span>`
+					: token
 			}
 
-			// otherwise it's a move
-			const color =
-				i % 2 === 0 ? _options.color : _options.color === 'w' ? 'b' : 'w'
+			// actual move
+			const color = getColor(moveIndex, _options.color)
+			moveIndex++
+
 			const move = token.replace(/[KQRBNP]/g, (match) => {
 				const unicode = color === 'w' ? pieces[match][0] : pieces[match][1]
 				return _options.html
 					? `<span class="unicode">${unicode}</span>`
 					: unicode
 			})
-			if (_options.html) {
-				return `<span class="move">${move}</span>`
-			} else {
-				return move
-			}
+
+			return _options.html ? `<span class="move">${move}</span>` : move
 		})
 		.join(' ')
 }
