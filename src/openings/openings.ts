@@ -160,7 +160,7 @@ const openings: Chess.OpeningInterface[] = [
 		id: 65,
 		name: 'Caro-Kann Defense: Advance, Van der Wiel Attack 4...e6 5. g4 Bg6 6. Nge2',
 		altNames: ['Advanced Caro-Kann', 'Advanced Caro-Kann Nc3+g4+Nge2'],
-		line: 'e4 c6 d4 d5 e5 Bf5 Nc3 e6 g4 Bg6',
+		line: 'e4 c6 d4 d5 e5 Bf5 Nc3 e6 g4 Bg6 Nge2',
 		tierLists: {
 			HLTierListBeginner: 'Unbreakable',
 			HLTierListBeginnerUrl: 'https://youtu.be/M9CwH47r6og?t=149',
