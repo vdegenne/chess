@@ -1,21 +1,3 @@
-export type ToUnicodeOptions = {
-	/**
-	 * @default 'w'
-	 */
-	color: 'w' | 'b'
-
-	/**
-	 * If true, will return pgn in HTML format
-	 *
-	 * @default false
-	 */
-	html: boolean
-}
-export const TO_UNICODE_DEFAULT_OPTIONS: ToUnicodeOptions = {
-	color: 'w',
-	html: false,
-}
-
 const pieces: Record<string, string[]> = {
 	K: ['♔', '♚'],
 	Q: ['♕', '♛'],
@@ -25,44 +7,60 @@ const pieces: Record<string, string[]> = {
 	P: ['♙', '♟'], // optional, usually pawns are not written in SAN
 }
 
-export function toUnicode(pgn: string, options?: Partial<ToUnicodeOptions>) {
-	if (!pgn) {
-		return ''
-	}
+function getColor(moveIndex: number, baseColor: 'w' | 'b') {
+	return moveIndex % 2 === 0 ? baseColor : baseColor === 'w' ? 'b' : 'w'
+}
 
-	function getColor(moveIndex: number, baseColor: 'w' | 'b') {
-		return moveIndex % 2 === 0 ? baseColor : baseColor === 'w' ? 'b' : 'w'
-	}
-
-	const _options: ToUnicodeOptions = {
-		...TO_UNICODE_DEFAULT_OPTIONS,
-		...(options ?? {}),
-	}
+export function toUnicode(pgn: string, startColor: 'w' | 'b' = 'w'): string {
+	if (!pgn) return ''
 
 	const tokens = pgn.trim().split(/\s+/)
 	let moveIndex = 0
 
 	return tokens
 		.map((token) => {
-			// move number like "1."
 			if (/^\d+\.$/.test(token)) {
-				return _options.html
-					? `<span class="move-number">${token}</span>`
-					: token
+				return token
 			}
 
-			// actual move
-			const color = getColor(moveIndex, _options.color)
+			const pieceColor = getColor(moveIndex, startColor)
 			moveIndex++
 
-			const move = token.replace(/[KQRBNP]/g, (match) => {
-				const unicode = color === 'w' ? pieces[match][0] : pieces[match][1]
-				return _options.html
-					? `<span class="unicode">${unicode}</span>`
-					: unicode
-			})
+			return token.replace(/[KQRBNP]/g, (match) =>
+				pieceColor === 'w' ? pieces[match][0] : pieces[match][1],
+			)
+		})
+		.join(' ')
+}
 
-			return _options.html ? `<span class="move">${move}</span>` : move
+export function toHtml(pgn: string, startColor: 'w' | 'b' = 'w'): string {
+	if (!pgn) return ''
+
+	const tokens = pgn.trim().split(/\s+/)
+	let moveIndex = 0
+
+	return tokens
+		.map((token) => {
+			// Move numbers
+			if (/^\d+\.$/.test(token)) {
+				return `<span class="move-number">${token}</span>`
+			}
+
+			const pieceColor = getColor(moveIndex, startColor)
+			moveIndex++
+
+			// Replace letters or existing Unicode with wrapped Unicode
+			const move = token
+				// piece letters → unicode
+				.replace(/[KQRBNP]/g, (match) => {
+					return `<span class="letter ${pieceColor === 'w' ? 'white' : 'black'}">${match}</span>`
+				})
+				// already-unicode pieces → wrap them
+				.replace(/[♔♕♖♗♘♙♚♛♜♝♞♟]/g, (match) => {
+					return `<span class="unicode ${pieceColor === 'w' ? 'white' : 'black'}">${match}</span>`
+				})
+
+			return `<span class="move">${move}</span>`
 		})
 		.join(' ')
 }

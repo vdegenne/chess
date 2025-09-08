@@ -1,10 +1,5 @@
 import {Chess as _Chess} from 'chess.js'
-import {
-	removeMoveNumbers,
-	TO_UNICODE_DEFAULT_OPTIONS,
-	toUnicode,
-	ToUnicodeOptions,
-} from './utils.js'
+import {removeMoveNumbers, toHtml, toUnicode} from './utils.js'
 
 interface PgnOptions {
 	/**
@@ -27,8 +22,14 @@ interface PgnOptions {
 	 * @default false
 	 */
 	unicode: boolean
-
-	toUnicodeOptions: Partial<ToUnicodeOptions>
+	/**
+	 * @default false
+	 */
+	html: boolean
+	/**
+	 * @default w
+	 */
+	startColor: 'w' | 'b'
 }
 
 interface FenOptions {
@@ -47,13 +48,11 @@ export class Chess extends _Chess {
 		const _options: PgnOptions = {
 			headers: true,
 			moveNumbers: true,
-			unicode: false,
 			newLine: '\n',
 			maxWidth: 0,
-			toUnicodeOptions: {
-				...TO_UNICODE_DEFAULT_OPTIONS,
-				...(options?.toUnicodeOptions ?? {}),
-			},
+			startColor: 'w',
+			unicode: false,
+			html: false,
 			...(options ?? {}),
 		}
 
@@ -69,7 +68,10 @@ export class Chess extends _Chess {
 		}
 
 		if (_options.unicode) {
-			pgn = toUnicode(pgn, _options.toUnicodeOptions)
+			pgn = toUnicode(pgn, _options.startColor)
+		}
+		if (_options.html) {
+			pgn = toHtml(pgn, _options.startColor)
 		}
 
 		return pgn
@@ -112,5 +114,11 @@ export class Chess extends _Chess {
 		for (let i = start; i <= max; i++) {
 			yield this.fen({moveIndex: i})
 		}
+	}
+
+	static fromPgn(pgn: string) {
+		const c = new Chess()
+		c.loadPgn(pgn)
+		return c
 	}
 }
