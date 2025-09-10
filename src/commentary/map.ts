@@ -128,3 +128,8 @@ export const AUDIO_MAP = {
 		on: 'misc/on.mp3',
 	},
 }
+
+export type FileKey = keyof typeof AUDIO_MAP.file
+export type SquareKey = keyof typeof AUDIO_MAP.square
+export type PieceKey = keyof typeof AUDIO_MAP.piece
+export type RankKey = keyof typeof AUDIO_MAP.rank

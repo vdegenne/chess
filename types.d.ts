@@ -1,4 +1,3 @@
-import type {TemplateResult} from 'lit'
 import type {Chess} from './src/Chess.ts'
 
 declare global {

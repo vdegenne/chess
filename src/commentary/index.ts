@@ -1,5 +1,5 @@
 import {type Move} from 'chess.js'
-import {AUDIO_MAP} from './map.js'
+import {AUDIO_MAP, FileKey, PieceKey, RankKey, SquareKey} from './map.js'
 import {createCancelableSpeaker} from './utils.js'
 
 const speaker = createCancelableSpeaker()
@@ -85,7 +85,7 @@ export class Commentary {
 
 		if (sanBody.includes('x')) {
 			const parts = sanBody.split('x')
-			if (parts[0]) tokens.push(AUDIO_MAP.file[parts[0]])
+			if (parts[0]) tokens.push(AUDIO_MAP.file[parts[0] as FileKey])
 			tokens.push(AUDIO_MAP.modifier.x)
 			sanBody = parts[1]
 
@@ -96,21 +96,23 @@ export class Commentary {
 
 		if (sanBody.includes('=')) {
 			const [dest, promo] = sanBody.split('=')
-			tokens.push(AUDIO_MAP.square[dest])
+			tokens.push(AUDIO_MAP.square[dest as SquareKey])
 			tokens.push(AUDIO_MAP.modifier['='])
-			tokens.push(AUDIO_MAP.piece[promo.toLowerCase()])
+			tokens.push(AUDIO_MAP.piece[promo.toLowerCase() as PieceKey])
 		} else {
 			const ambiguityMatch = sanBody.match(/^([a-h]|[1-8])?([a-h][1-8])$/)
 			if (ambiguityMatch) {
 				const prefix = ambiguityMatch[1]
 				const square = ambiguityMatch[2]
 				if (prefix) {
-					if (/[a-h]/.test(prefix)) tokens.push(AUDIO_MAP.file[prefix])
-					if (/[1-8]/.test(prefix)) tokens.push(AUDIO_MAP.rank[prefix])
+					if (/[a-h]/.test(prefix))
+						tokens.push(AUDIO_MAP.file[prefix as FileKey])
+					if (/[1-8]/.test(prefix))
+						tokens.push(AUDIO_MAP.rank[prefix as RankKey])
 				}
-				tokens.push(AUDIO_MAP.square[square])
+				tokens.push(AUDIO_MAP.square[square as SquareKey])
 			} else if (/^[a-h][1-8]$/.test(sanBody)) {
-				tokens.push(AUDIO_MAP.square[sanBody])
+				tokens.push(AUDIO_MAP.square[sanBody as SquareKey])
 			}
 		}
 

@@ -12,7 +12,7 @@ export class Opening implements Chess.RuntimeOpening {
 		HLTierListBeginner: Chess.HikaruLevyTierListValue | undefined
 		HLTierListBeginnerUrl: string | undefined
 	}
-	pov: 'w' | 'b'
+	pov: 'w' | 'b' = 'w'
 	description?: string | undefined
 	altLines?: string[] | undefined
 

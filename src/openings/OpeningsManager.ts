@@ -140,13 +140,11 @@ export class OpeningsManager {
 	getOpeningTree(opening: Chess.RuntimeOpening) {
 		const moves = opening.chess.history()
 
-		const tree = moves.flatMap((_, idx) => {
-			const prefixPgn = moves.slice(0, idx + 1).join(' ')
-			const matchingOpening = this.getOpeningFromPgn(prefixPgn)
-			return matchingOpening ? [matchingOpening] : []
-		})
-
-		return tree
+		return moves
+			.map((_, idx) =>
+				this.getOpeningFromPgn(moves.slice(0, idx + 1).join(' ')),
+			)
+			.filter(Boolean) as Chess.RuntimeOpening[]
 	}
 }
 
