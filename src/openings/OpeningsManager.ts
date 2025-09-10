@@ -1,6 +1,6 @@
 import {Chess} from 'chess.js'
 import {Opening} from './Opening.js'
-import _openings from './openings.js'
+import __openings from './openings.js'
 
 // Check for duplicates
 function findDuplicatesByMultiple<T>(
@@ -38,7 +38,7 @@ function findDuplicatesByMultiple<T>(
 	return duplicates
 }
 
-const duplicates = findDuplicatesByMultiple(_openings, ['line', 'id'])
+const duplicates = findDuplicatesByMultiple(__openings, ['line', 'id'])
 
 if (duplicates.line.length > 0 || duplicates.id.length > 0) {
 	const messages = []
@@ -57,7 +57,7 @@ if (duplicates.line.length > 0 || duplicates.id.length > 0) {
 
 type GetOpeningsOptions = {
 	/**
-	 * @default 'Moves count'
+	 * @default 'None'
 	 */
 	sort: Chess.OpeningsSortMethod
 	/**
@@ -66,16 +66,21 @@ type GetOpeningsOptions = {
 	fromPerspective: Chess.OpeningsFromPerspectiveFilter
 }
 
-export class OpeningsManager {
-	#openings: Chess.RuntimeOpening[] = _openings.map((o) => new Opening(o))
+const _openings: Chess.RuntimeOpening[] = __openings.map((o) => new Opening(o))
+const openingPgnMap: Map<string, Chess.RuntimeOpening> = new Map()
+for (const o of _openings) {
+	const key = o.chess.history().join(' ')
+	openingPgnMap.set(key, o)
+}
 
+export class OpeningsManager {
 	getOpenings(options?: Partial<GetOpeningsOptions>) {
 		const _options: GetOpeningsOptions = {
-			sort: 'Moves count',
+			sort: 'None',
 			fromPerspective: 'Both',
 			...(options ?? {}),
 		}
-		const openings = [...this.#openings]
+		const openings = [..._openings]
 		if (_options.sort) {
 			switch (_options.sort) {
 				case 'Alphabet':
@@ -90,6 +95,10 @@ export class OpeningsManager {
 						return o1.name.localeCompare(o2.name)
 					})
 					break
+
+				case 'None':
+				default:
+					break
 			}
 		}
 		switch (_options.fromPerspective) {
@@ -103,10 +112,10 @@ export class OpeningsManager {
 	}
 
 	getOpeningFromName(name: string) {
-		return this.#openings.find((o) => o.name === name)
+		return _openings.find((o) => o.name === name)
 	}
 	getOpeningFromId(id: number) {
-		return this.#openings.find((o) => o.id === id)
+		return _openings.find((o) => o.id === id)
 	}
 	getOpeningFromPgn(pgn: string) {
 		const chess = new Chess()
@@ -139,21 +148,14 @@ export class OpeningsManager {
 
 	getOpeningTree(opening: Chess.RuntimeOpening) {
 		const moves = opening.chess.history()
-		const allOpenings = this.getOpenings()
-
-		// map from history string to openings
-		const openingMap = new Map<string, Chess.RuntimeOpening[]>()
-		for (const o of allOpenings) {
-			const key = o.chess.history().join(' ')
-			if (!openingMap.has(key)) openingMap.set(key, [])
-			openingMap.get(key)!.push(o)
-		}
-
 		const tree: Chess.RuntimeOpening[] = []
-		for (let i = 0; i < moves.length; i++) {
-			const prefix = moves.slice(0, i + 1).join(' ')
-			const matches = openingMap.get(prefix)
-			if (matches) tree.push(...matches)
+
+		let prefix: string[] = []
+		for (const move of moves) {
+			prefix.push(move)
+			const key = prefix.join(' ')
+			const match = openingPgnMap.get(key)
+			if (match) tree.push(match)
 		}
 
 		return tree

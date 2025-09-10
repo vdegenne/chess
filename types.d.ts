@@ -37,7 +37,7 @@ declare global {
 			// getLine: () => string | TemplateResult
 		}
 
-		type OpeningsSortMethod = 'Moves count' | 'Alphabet'
+		type OpeningsSortMethod = 'Moves count' | 'Alphabet' | 'None'
 		type OpeningsFromPerspectiveFilter = 'White' | 'Black' | 'Both'
 	}
 }
