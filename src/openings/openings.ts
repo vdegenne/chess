@@ -771,6 +771,7 @@ const openings: Chess.OpeningInterface[] = [
 	{
 		id: 47,
 		name: 'Hungarian Defense',
+		parent: 38,
 		line: 'e4 e5 Nf3 Nc6 Bc4 Be7',
 		tierLists: {
 			HLTierListBeginner: undefined,

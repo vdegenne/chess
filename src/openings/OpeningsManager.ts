@@ -1,3 +1,4 @@
+import {Chess} from 'chess.js'
 import {Opening} from './Opening.js'
 import _openings from './openings.js'
 
@@ -107,6 +108,15 @@ export class OpeningsManager {
 	getOpeningFromId(id: number) {
 		return this.#openings.find((o) => o.id === id)
 	}
+	getOpeningFromPgn(pgn: string) {
+		const chess = new Chess()
+		chess.loadPgn(pgn)
+		const moves = chess.history().join(' ')
+
+		const allOpenings = this.getOpenings()
+		// find the first opening that has the same move sequence
+		return allOpenings.find((o) => o.chess.history().join(' ') === moves)
+	}
 
 	getStats() {
 		const lengths = this.getOpenings().map((o) => o.chess.history().length)
@@ -125,6 +135,18 @@ export class OpeningsManager {
 			minMoves: Math.min(...Object.keys(movesCountsMap).map((k) => Number(k))),
 			maxMoves: Math.max(...Object.keys(movesCountsMap).map((k) => Number(k))),
 		}
+	}
+
+	getOpeningTree(opening: Chess.RuntimeOpening) {
+		const moves = opening.chess.history()
+
+		const tree = moves.flatMap((_, idx) => {
+			const prefixPgn = moves.slice(0, idx + 1).join(' ')
+			const matchingOpening = this.getOpeningFromPgn(prefixPgn)
+			return matchingOpening ? [matchingOpening] : []
+		})
+
+		return tree
 	}
 }
 

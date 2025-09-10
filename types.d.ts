@@ -16,6 +16,7 @@ declare global {
 		interface OpeningInterface {
 			id: number
 			name: string
+			parent?: number
 			pov: 'w' | 'b'
 			description?: string | undefined
 			altNames?: string[] | undefined
