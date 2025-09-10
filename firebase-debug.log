@@ -1,0 +1,10 @@
+[debug] [2025-09-10T12:31:13.090Z] ----------------------------------------------------------------------
+[debug] [2025-09-10T12:31:13.091Z] Command:       /usr/local/bin/node /usr/local/bin/firebase deploy --only hosting
+[debug] [2025-09-10T12:31:13.092Z] CLI Version:   14.14.0
+[debug] [2025-09-10T12:31:13.092Z] Platform:      linux
+[debug] [2025-09-10T12:31:13.092Z] Node Version:  v24.6.0
+[debug] [2025-09-10T12:31:13.092Z] Time:          Wed Sep 10 2025 14:31:13 GMT+0200 (Central European Summer Time)
+[debug] [2025-09-10T12:31:13.092Z] ----------------------------------------------------------------------
+[debug] 
+[error] 
+[error] Error: Not in a Firebase app directory (could not locate firebase.json)

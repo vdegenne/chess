@@ -139,12 +139,24 @@ export class OpeningsManager {
 
 	getOpeningTree(opening: Chess.RuntimeOpening) {
 		const moves = opening.chess.history()
+		const allOpenings = this.getOpenings()
 
-		return moves
-			.map((_, idx) =>
-				this.getOpeningFromPgn(moves.slice(0, idx + 1).join(' ')),
-			)
-			.filter(Boolean) as Chess.RuntimeOpening[]
+		// map from history string to openings
+		const openingMap = new Map<string, Chess.RuntimeOpening[]>()
+		for (const o of allOpenings) {
+			const key = o.chess.history().join(' ')
+			if (!openingMap.has(key)) openingMap.set(key, [])
+			openingMap.get(key)!.push(o)
+		}
+
+		const tree: Chess.RuntimeOpening[] = []
+		for (let i = 0; i < moves.length; i++) {
+			const prefix = moves.slice(0, i + 1).join(' ')
+			const matches = openingMap.get(prefix)
+			if (matches) tree.push(...matches)
+		}
+
+		return tree
 	}
 }
 

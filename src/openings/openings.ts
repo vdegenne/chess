@@ -1147,6 +1147,17 @@ const openings: Chess.OpeningInterface[] = [
 		},
 		pov: 'b',
 	},
+	{
+		id: 109,
+		name: "King's Pawn Opening: Latvian Gambit #",
+		line: 'e4 e5 Nf3 f5 Nxe5 Bc5 exf5 Bxf2+ Kxf2 Qh4+ Kg1 Qd4#',
+		tierLists: {
+			HLTierListBeginner: undefined,
+			HLTierListBeginnerUrl: undefined,
+		},
+		youtubes: ['https://www.youtube.com/shorts/O7xcKga2hZk'],
+		pov: 'b',
+	},
 ] as const
 
 export default openings
