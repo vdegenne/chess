@@ -73,7 +73,7 @@ const openings: Chess.OpeningInterface[] = [
 	},
 	{
 		id: 8,
-		name: 'Indian defense',
+		name: 'Indian Game',
 		line: 'd4 Nf6',
 		tierLists: {
 			HLTierListBeginner: undefined,
@@ -933,7 +933,7 @@ const openings: Chess.OpeningInterface[] = [
 			HLTierListBeginner: 'Legit',
 			HLTierListBeginnerUrl: 'https://youtu.be/fHsb7-LbC34?t=1664',
 		},
-		pov: 'b',
+		pov: 'w',
 	},
 	{
 		id: 80,
@@ -953,7 +953,7 @@ const openings: Chess.OpeningInterface[] = [
 			HLTierListBeginner: 'Really, bro',
 			HLTierListBeginnerUrl: 'https://youtu.be/fHsb7-LbC34?t=1947',
 		},
-		pov: 'w',
+		pov: 'b',
 	},
 	{
 		id: 82,
@@ -1156,6 +1156,26 @@ const openings: Chess.OpeningInterface[] = [
 			HLTierListBeginnerUrl: undefined,
 		},
 		youtubes: ['https://www.youtube.com/shorts/O7xcKga2hZk'],
+		pov: 'b',
+	},
+	{
+		id: 110,
+		name: 'Indian Game 2. c4',
+		line: 'd4 Nf6 c4',
+		tierLists: {
+			HLTierListBeginner: undefined,
+			HLTierListBeginnerUrl: undefined,
+		},
+		pov: 'w',
+	},
+	{
+		id: 111,
+		name: 'Sicilian Defense: French Variation',
+		line: 'e4 c5 Nf3 e6',
+		tierLists: {
+			HLTierListBeginner: undefined,
+			HLTierListBeginnerUrl: undefined,
+		},
 		pov: 'b',
 	},
 ] as const
