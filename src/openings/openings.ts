@@ -143,7 +143,7 @@ const openings: Chess.OpeningInterface[] = [
 			HLTierListBeginner: 'Garbage',
 			HLTierListBeginnerUrl: 'https://youtu.be/M9CwH47r6og?t=149',
 		},
-		pov: 'b',
+		pov: 'w',
 	},
 	{
 		id: 63,
