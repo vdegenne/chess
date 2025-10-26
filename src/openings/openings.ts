@@ -564,7 +564,7 @@ const openings: Chess.OpeningInterface[] = [
 			HLTierListBeginner: undefined,
 			HLTierListBeginnerUrl: undefined,
 		},
-		pov: 'b',
+		pov: 'w',
 	},
 	{
 		id: 34,
@@ -1135,7 +1135,7 @@ const openings: Chess.OpeningInterface[] = [
 			HLTierListBeginnerUrl: undefined,
 		},
 		youtubes: ['https://youtu.be/M9CwH47r6og?t=2233'],
-		pov: 'w',
+		pov: 'b',
 	},
 	{
 		id: 108,
@@ -1177,6 +1177,16 @@ const openings: Chess.OpeningInterface[] = [
 			HLTierListBeginnerUrl: undefined,
 		},
 		pov: 'b',
+	},
+	{
+		id: 112,
+		name: 'Caro-Kann Defense: Alien Gambit',
+		line: 'e4 c6 d4 d5 Nc3 dxe4 Nxe4 Nf6 Ng5',
+		tierLists: {
+			HLTierListBeginner: undefined,
+			HLTierListBeginnerUrl: undefined,
+		},
+		pov: 'w',
 	},
 ] as const
 
